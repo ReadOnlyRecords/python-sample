@@ -65,8 +65,7 @@ jobs:
         with:
           scan-type: 'sbom'
           scan-ref: 'spdx.json'
-          format: 'sarif'
-          output: 'sarif/minimus-base-image.sarif'
+          format: 'table'
            
       - name: Build python image
         run: podman build -t ${{ env.GAR_LOCATION }}python/python-library:latest .
@@ -86,32 +85,15 @@ jobs:
         if: always()
         with:
           image-ref: '${{ env.GAR_LOCATION }}python/python-library:latest'
-          format: 'sarif'
-          output: 'sarif/dockerhub-library-image.sarif'
+          format: 'table'
 
       - name: Scan python-mini image
         uses: aquasecurity/trivy-action@0.30.0
         if: always()
         with:
           image-ref: '${{ env.GAR_LOCATION }}python/python-mini:latest'
-          format: 'sarif'
-          output: 'sarif/minimus-python-image.sarif'
+          format: 'table
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'sarif/dockerhub-library-image.sarif'
-          category: DockerHubLibraryBuild 
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'sarif/minimus-python-image.sarif'
-          category: MinimusBuild 
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'sarif/minimus-base-image.sarif'
           category: MinimusBaseImage
 
