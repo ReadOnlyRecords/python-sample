@@ -92,8 +92,5 @@ jobs:
         if: always()
         with:
           image-ref: '${{ env.GAR_LOCATION }}python/python-mini:latest'
-          format: 'table
-
-
-          category: MinimusBaseImage
+          format: 'table'
 
