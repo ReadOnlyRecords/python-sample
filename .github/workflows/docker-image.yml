@@ -2,6 +2,7 @@ name: Build images and push to GAR
 
 on:
   workflow_dispatch:
+  repository_dispatch:
   push:
     branches: ["main"]
   pull_request:
