@@ -2,6 +2,7 @@ name: Build images and push to GAR
 
 on:
   workflow_dispatch:
+    type: [new-python-image]
   repository_dispatch:
   push:
     branches: ["main"]
