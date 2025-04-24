@@ -71,7 +71,7 @@ jobs:
 
       - name: "Scan Minimus image SBOM with grype"
         run: |
-          grype sbom:spdx.json
+          ./grype sbom:spdx.json
            
       - name: Build python image
         run: podman build -t ${{ env.GAR_LOCATION }}python/python-library:latest .
@@ -88,7 +88,7 @@ jobs:
         
       - name: "Scan python image with grype"
         run: |
-          grype ${{ env.GAR_LOCATION }}python/python-library:latest
+          ./grype ${{ env.GAR_LOCATION }}python/python-library:latest
           
       - name: Scan python image
         uses: aquasecurity/trivy-action@0.30.0
@@ -99,7 +99,7 @@ jobs:
 
       - name: "Scan python-mini image with grype"
         run: |
-          grype ${{ env.GAR_LOCATION }}python/python-mini:latest
+          ./grype ${{ env.GAR_LOCATION }}python/python-mini:latest
 
       - name: Scan python-mini image
         uses: aquasecurity/trivy-action@0.30.0
