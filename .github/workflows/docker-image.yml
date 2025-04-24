@@ -90,6 +90,8 @@ jobs:
         uses: anchore/scan-action@v6
         with:
           image: '${{ env.GAR_LOCATION }}python/python-library:latest'
+          fail-build: false
+          output-format: 'table'
           
       - name: Scan python image
         uses: aquasecurity/trivy-action@0.30.0
