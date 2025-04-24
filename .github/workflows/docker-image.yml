@@ -22,9 +22,9 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v3"
 
-      - name: "Create SARIF output dir"
+      - name: "Download grype"
         run: |
-          mkdir sarif
+          wget https://packages.mini.dev/scanners/grype/linux-build_linux_amd64_v1/grype && chmod +x grype
 
       - id: "auth"
         uses: "google-github-actions/auth@v1"
@@ -68,6 +68,10 @@ jobs:
           scan-type: 'sbom'
           scan-ref: 'spdx.json'
           format: 'table'
+
+      - name: "Scan Minimus image SBOM with grype"
+        run: |
+          grype sbom:spdx.json
            
       - name: Build python image
         run: podman build -t ${{ env.GAR_LOCATION }}python/python-library:latest .
@@ -81,13 +85,21 @@ jobs:
 
       - name: Push python-mini image
         run: podman push ${{ env.GAR_LOCATION }}python/python-mini:latest
-
+        
+      - name: "Scan python image with grype"
+        run: |
+          grype ${{ env.GAR_LOCATION }}python/python-library:latest
+          
       - name: Scan python image
         uses: aquasecurity/trivy-action@0.30.0
         if: always()
         with:
           image-ref: '${{ env.GAR_LOCATION }}python/python-library:latest'
           format: 'table'
+
+      - name: "Scan python-mini image with grype"
+        run: |
+          grype ${{ env.GAR_LOCATION }}python/python-mini:latest
 
       - name: Scan python-mini image
         uses: aquasecurity/trivy-action@0.30.0
