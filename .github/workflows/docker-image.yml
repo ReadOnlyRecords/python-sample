@@ -87,8 +87,9 @@ jobs:
         run: podman push ${{ env.GAR_LOCATION }}python/python-mini:latest
         
       - name: "Scan python image with grype"
-        run: |
-          ./grype ${{ env.GAR_LOCATION }}python/python-library:latest
+        uses: anchore/scan-action@v6
+          with:
+          image: ${{ env.GAR_LOCATION }}python/python-library:latest
           
       - name: Scan python image
         uses: aquasecurity/trivy-action@0.30.0
