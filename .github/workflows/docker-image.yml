@@ -92,6 +92,8 @@ jobs:
           image: '${{ env.GAR_LOCATION }}python/python-library:latest'
           fail-build: false
           output-format: 'table'
+          severity-cutoff: 'critical'
+          by-cve: true
           
 #      - name: Scan python image
 #        uses: aquasecurity/trivy-action@0.30.0
