@@ -103,7 +103,7 @@ jobs:
 #          format: 'table'
       - name: "Scan python image with grype cli"
         run: |
-          ./grype ${{ env.GAR_LOCATION }}python/python-library:latest
+          ./grype library/python
 
       - name: "Scan python-mini image with grype"
         run: |
