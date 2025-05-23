@@ -101,6 +101,9 @@ jobs:
 #        with:
 #          image-ref: '${{ env.GAR_LOCATION }}python/python-library:latest'
 #          format: 'table'
+      - name: "Scan python image with grype cli"
+        run: |
+          ./grype ${{ env.GAR_LOCATION }}python/python-library:latest
 
       - name: "Scan python-mini image with grype"
         run: |
