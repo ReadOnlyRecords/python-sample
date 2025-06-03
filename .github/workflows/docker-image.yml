@@ -62,12 +62,12 @@ jobs:
            reg.mini.dev/python:latest | jq '.payload | @base64d |
            fromjson | .predicate'  > spdx.json
 
-#      - name: "Scan Minimus image SBOM"
-#        uses: aquasecurity/trivy-action@0.30.0
-#        with:
-#          scan-type: 'sbom'
-#          scan-ref: 'spdx.json'
-#          format: 'table'
+      - name: "Scan Minimus image SBOM"
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          scan-type: 'sbom'
+          scan-ref: 'spdx.json'
+          format: 'table'
 
       - name: "Scan Minimus image SBOM with grype"
         run: |
@@ -95,12 +95,12 @@ jobs:
           severity-cutoff: 'critical'
           by-cve: true
           
-#      - name: Scan python image
-#        uses: aquasecurity/trivy-action@0.30.0
-#        if: always()
-#        with:
-#          image-ref: '${{ env.GAR_LOCATION }}python/python-library:latest'
-#          format: 'table'
+      - name: Scan python image
+        uses: aquasecurity/trivy-action@0.30.0
+        if: always()
+        with:
+          image-ref: '${{ env.GAR_LOCATION }}python/python-library:latest'
+          format: 'table'
       - name: "Scan python image with grype cli"
         run: |
           ./grype library/python
@@ -109,10 +109,10 @@ jobs:
         run: |
           ./grype ${{ env.GAR_LOCATION }}python/python-mini:latest
 
-#      - name: Scan python-mini image
-#        uses: aquasecurity/trivy-action@0.30.0
-#        if: always()
-#        with:
-#          image-ref: '${{ env.GAR_LOCATION }}python/python-mini:latest'
-#          format: 'table'
+      - name: Scan python-mini image
+        uses: aquasecurity/trivy-action@0.30.0
+        if: always()
+        with:
+          image-ref: '${{ env.GAR_LOCATION }}python/python-mini:latest'
+          format: 'table'
 
