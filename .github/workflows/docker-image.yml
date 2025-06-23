@@ -22,10 +22,6 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v3"
 
-      - name: "Download grype"
-        run: |
-          wget https://packages.mini.dev/scanners/grype/linux-build_linux_amd64_v1/grype && chmod +x grype
-
       - id: "auth"
         uses: "google-github-actions/auth@v1"
         with:
@@ -69,10 +65,7 @@ jobs:
           scan-ref: 'spdx.json'
           format: 'table'
 
-      - name: "Scan Minimus image SBOM with grype"
-        run: |
-          ./grype sbom:spdx.json
-           
+
       - name: Build python image
         run: podman build -t ${{ env.GAR_LOCATION }}python/python-library:latest .
 
@@ -101,13 +94,15 @@ jobs:
         with:
           image-ref: '${{ env.GAR_LOCATION }}python/python-library:latest'
           format: 'table'
-      - name: "Scan python image with grype cli"
-        run: |
-          ./grype library/python
 
       - name: "Scan python-mini image with grype"
-        run: |
-          ./grype ${{ env.GAR_LOCATION }}python/python-mini:latest
+        uses: anchore/scan-action@v6
+        with:
+          image: '${{ env.GAR_LOCATION }}python/python-mini:latest'
+          fail-build: false
+          output-format: 'table'
+          severity-cutoff: 'critical'
+          by-cve: true
 
       - name: Scan python-mini image
         uses: aquasecurity/trivy-action@0.30.0
