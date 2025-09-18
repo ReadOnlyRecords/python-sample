@@ -102,8 +102,22 @@ jobs:
           registry: ${{ env.GAR_LOCATION }}
           image: "python/python-mini"
           tags: latest
-          
+        
 
+      - name: Sign the library image
+        run: |
+          cosign sign -y --recursive \
+            ${{ env.GAR_LOCATION }}python/python-library@${{ steps.push.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: 1
+
+      - name: Sign the Minimus image
+        run: |
+          cosign sign -y --recursive \
+            ${{ env.GAR_LOCATION }}python/python-mini@${{ steps.push-mini.outputs.digest }}
+        env:
+          COSIGN_EXPERIMENTAL: 1
+          
       - name: "Scan python image with grype"
         uses: anchore/scan-action@v6
         with:
@@ -111,22 +125,7 @@ jobs:
           fail-build: false
           output-format: 'table'
           severity-cutoff: 'critical'
-          by-cve: true
-
-      - name: Sign the library image
-        run: |
-          cosign sign \
-            ${{ env.GAR_LOCATION }}python/python-library:latest
-        env:
-          COSIGN_EXPERIMENTAL: 1
-
-      - name: Sign the Minimus image
-        run: |
-          cosign sign \
-            ${{ env.GAR_LOCATION }}python/python-mini:latest
-        env:
-          COSIGN_EXPERIMENTAL: 1
-          
+          by-cve: true          
       - name: Scan python image
         uses: aquasecurity/trivy-action@0.30.0
         if: always()
