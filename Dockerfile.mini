@@ -1,4 +1,4 @@
-FROM reg.mini.dev/python:3-dev AS builder 
+FROM reg.mini.dev/python:3.13-dev AS builder 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PATH="/myapp/venv/bin:$PATH"
@@ -9,7 +9,7 @@ COPY requirements.txt /myapp/
 RUN pip3 install -r requirements.txt --no-cache-dir
 COPY src/ /myapp/ 
 
-FROM reg.mini.dev/python:3
+FROM reg.mini.dev/python:3.13
 ENV PYTHONUNBUFFERED=1
 ENV PATH="/myapp/venv/bin:$PATH"
 COPY --chown=1000:1000 --from=builder /myapp /myapp
