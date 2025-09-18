@@ -65,20 +65,45 @@ jobs:
           scan-ref: 'spdx.json'
           format: 'table'
 
+      - name: Build container image from Minimus base
+        uses: redhat-actions/buildah-build@v2
+        with:
+          archs: amd64, arm64
+          image: "python/python-library"
+          tags: latest
+          containerfiles: Dockerfile
+          layers: false
+          oci: true
 
-      - name: Build python image
-        run: podman build -t ${{ env.GAR_LOCATION }}python/python-library:latest .
+      - name: Push to Container Registry
+        uses: redhat-actions/push-to-registry@v2
+        id: push-mini
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          registry: ${{ env.GAR_LOCATION }}
+          image: "python/python-library"
+          tags: latest
 
-      - name: Build python-mini image
-        run: podman build -t ${{ env.GAR_LOCATION }}python/python-mini:latest -f Dockerfile.mini .  
-        
+      - name: Build container image from Minimus base
+        uses: redhat-actions/buildah-build@v2
+        with:
+          archs: amd64, arm64
+          image: "python/python-mini"
+          tags: latest
+          containerfiles: Dockerfile.mini
+          layers: false
+          oci: true
 
-      - name: Push python image
-        run: podman push ${{ env.GAR_LOCATION }}python/python-library:latest
+      - name: Push to Container Registry
+        uses: redhat-actions/push-to-registry@v2
+        id: push-mini
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          registry: ${{ env.GAR_LOCATION }}
+          image: "python/python-mini"
+          tags: latest
+          
 
-      - name: Push python-mini image
-        run: podman push ${{ env.GAR_LOCATION }}python/python-mini:latest
-        
       - name: "Scan python image with grype"
         uses: anchore/scan-action@v6
         with:
@@ -87,6 +112,20 @@ jobs:
           output-format: 'table'
           severity-cutoff: 'critical'
           by-cve: true
+
+      - name: Sign the library image
+        run: |
+          cosign sign \
+            ${{ env.GAR_LOCATION }}python/python-library:latest
+        env:
+          COSIGN_EXPERIMENTAL: 1
+
+      - name: Sign the Minimus image
+        run: |
+          cosign sign \
+            ${{ env.GAR_LOCATION }}python/python-mini:latest
+        env:
+          COSIGN_EXPERIMENTAL: 1
           
       - name: Scan python image
         uses: aquasecurity/trivy-action@0.30.0
