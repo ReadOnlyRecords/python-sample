@@ -77,7 +77,7 @@ jobs:
 
       - name: Push to Container Registry
         uses: redhat-actions/push-to-registry@v2
-        id: push-mini
+        id: push
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         with:
           registry: ${{ env.GAR_LOCATION }}
