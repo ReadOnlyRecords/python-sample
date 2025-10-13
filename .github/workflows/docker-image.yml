@@ -85,7 +85,6 @@ jobs:
       - name: Push to Container Registry
         uses: redhat-actions/push-to-registry@v2
         id: push
-        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         with:
           registry: ${{ env.GAR_LOCATION }}
           image: "python/python-library"
@@ -104,7 +103,6 @@ jobs:
       - name: Push to Container Registry
         uses: redhat-actions/push-to-registry@v2
         id: push-mini
-        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         with:
           registry: ${{ env.GAR_LOCATION }}
           image: "python/python-mini"
