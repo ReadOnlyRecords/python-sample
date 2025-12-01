@@ -50,13 +50,6 @@ jobs:
         run: |-
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-      - name: "Scan Minimus image SBOM"
-        uses: aquasecurity/trivy-action@0.30.0
-        with:
-          scan-type: 'sbom'
-          scan-ref: 'spdx.json'
-          format: 'table'
-
       - name: Build container image from Dockerhub base
         uses: redhat-actions/buildah-build@v2
         with:
