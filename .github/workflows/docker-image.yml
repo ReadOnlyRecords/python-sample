@@ -55,7 +55,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           archs: amd64
-          image: "python/python-library"
+          image: "artifactory/poc-python/python-library"
           tags: latest
           containerfiles: Dockerfile
           layers: false
@@ -73,7 +73,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           archs: amd64
-          image: "python/python-mini"
+          image: "artifactory/poc-python/python-mini"
           tags: latest
           containerfiles: Dockerfile.mini
           layers: false
