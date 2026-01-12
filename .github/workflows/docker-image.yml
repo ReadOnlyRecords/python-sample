@@ -42,7 +42,8 @@ jobs:
 
       - name: "Use gcloud CLI"
         run: "gcloud info"
-
+      - name: "Artiactory registry auth"
+        run: docker login -u ${{ secrets.ARTIFACTORY_USER }} -p ${{ secrets.ARTIFACTORY_TOKEN }} reg.mini.dev
       - name: "Minimus registry auth"
         run: docker login -u minimus -p ${{ secrets.MINIMUS_TOKEN }} reg.mini.dev
 
@@ -64,8 +65,8 @@ jobs:
         uses: redhat-actions/push-to-registry@v2
         id: push
         with:
-          registry: ${{ env.GAR_LOCATION }}
-          image: "python/python-library"
+          registry: trial09bm5z.jfrog.io
+          image: "artifactory/poc-python/python-library"
           tags: latest
 
       - name: Build container image from Minimus base
@@ -82,8 +83,8 @@ jobs:
         uses: redhat-actions/push-to-registry@v2
         id: push-mini
         with:
-          registry: ${{ env.GAR_LOCATION }}
-          image: "python/python-mini"
+          registry: trial09bm5z.jfrog.io
+          image: "artifactory/poc-python/python-mini"
           tags: latest
         
 
