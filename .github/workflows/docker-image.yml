@@ -55,7 +55,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           archs: amd64
-          image: "artifactory/poc-python/python-library"
+          image: "poc-python/python-library"
           tags: latest
           containerfiles: Dockerfile
           layers: false
@@ -66,14 +66,14 @@ jobs:
         id: push
         with:
           registry: trial09bm5z.jfrog.io
-          image: "artifactory/poc-python/python-library"
+          image: "poc-python/python-library"
           tags: latest
 
       - name: Build container image from Minimus base
         uses: redhat-actions/buildah-build@v2
         with:
           archs: amd64
-          image: "artifactory/poc-python/python-mini"
+          image: "poc-python/python-mini"
           tags: latest
           containerfiles: Dockerfile.mini
           layers: false
@@ -84,7 +84,7 @@ jobs:
         id: push-mini
         with:
           registry: trial09bm5z.jfrog.io
-          image: "artifactory/poc-python/python-mini"
+          image: "poc-python/python-mini"
           tags: latest
         
 
