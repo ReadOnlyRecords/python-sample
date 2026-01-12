@@ -42,8 +42,8 @@ jobs:
 
       - name: "Use gcloud CLI"
         run: "gcloud info"
-      - name: "Artiactory registry auth"
-        run: docker login -u ${{ secrets.ARTIFACTORY_USER }} -p ${{ secrets.ARTIFACTORY_TOKEN }} reg.mini.dev
+      - name: "Artifactory registry auth"
+        run: docker login -u ${{ secrets.ARTIFACTORY_USER }} -p ${{ secrets.ARTIFACTORY_TOKEN }} trial09bm5z.jfrog.io
       - name: "Minimus registry auth"
         run: docker login -u minimus -p ${{ secrets.MINIMUS_TOKEN }} reg.mini.dev
 
