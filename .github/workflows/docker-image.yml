@@ -109,12 +109,6 @@ jobs:
           output-format: 'table'
           severity-cutoff: 'critical'
           by-cve: true          
-      - name: Scan python image
-        uses: aquasecurity/trivy-action@0.35.0
-        if: always()
-        with:
-          image-ref: '${{ env.GAR_LOCATION }}python/python-library:latest'
-          format: 'table'
 
       - name: "Scan python-mini image with grype"
         uses: anchore/scan-action@v6
@@ -124,11 +118,4 @@ jobs:
           output-format: 'table'
           severity-cutoff: 'critical'
           by-cve: true
-
-      - name: Scan python-mini image
-        uses: aquasecurity/trivy-action@0.35.0
-        if: always()
-        with:
-          image-ref: '${{ env.GAR_LOCATION }}python/python-mini:latest'
-          format: 'table'
 
