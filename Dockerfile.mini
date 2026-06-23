@@ -1,4 +1,4 @@
-FROM reg.mini.dev/python:3.13-dev AS builder 
+FROM reg.mini.dev/python:latest-dev AS builder 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PATH="/myapp/venv/bin:$PATH"
